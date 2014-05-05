@@ -52,7 +52,11 @@ public class URLQueue implements ie.moguntia.threads.Queue {
 
     @Override
     public int getQueueSize(int level) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		if (level % 2 == 0) {
+			return evenQueue.size();
+		} else {
+			return oddQueue.size();
+		}
     }
 
     @Override
@@ -100,8 +104,7 @@ public class URLQueue implements ie.moguntia.threads.Queue {
 
     @Override
     public boolean push(Object url, int level) {
-        // don't allow more than maxElements links to be gathered
-        String s = ((URL) url).toString();
+        String s = (String) url;
         if (!fileWorker.checkIfAlreadyExists(s)) {
             // has not been in set yet, so add to the appropriate queue
             if (level % 2 == 0) {

@@ -19,7 +19,7 @@ public class FileWorker {
     public boolean checkIfAlreadyExists(String url){
         FileReader fr = null;
         try {
-            fr = new FileReader("file.txt");
+            fr = new FileReader("myfile.txt");
             BufferedReader br = new BufferedReader(fr);
             String line;
             while((line = br.readLine()) != null) {
