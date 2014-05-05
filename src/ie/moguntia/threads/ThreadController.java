@@ -22,6 +22,11 @@ package ie.moguntia.threads;
  */
 
 public class ThreadController {
+    
+        /**
+         * Some of my addition for extras
+         */
+        Object extra;
 
 	/**
 	 * current level (see interface Queue for details on levels)
@@ -96,6 +101,17 @@ public class ThreadController {
 		nThreads = 0;
 		startThreads();
 	}
+        
+        /**
+         * Extra Stuffs like Workers-Mongo, Lucene are accessible to ThreadController as ExtraStuff.class
+         * @param _extra 
+         */
+        public void putExtra(Object _extra){
+            this.extra = _extra;
+        }
+        public Object getExtra(){
+            return extra;
+        }
 
 	/**
 	 * Get a unique number from a counter

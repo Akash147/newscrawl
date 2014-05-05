@@ -8,17 +8,37 @@ package newscrawl.utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Set;
+import jpt.FileWorker;
+import org.jsoup.helper.DescendableLinkedList;
 
 /**
  *
  * @author Akash
  */
 public class URLQueue implements ie.moguntia.threads.Queue {
+    private FileWorker fileWorker;
     private LinkedList evenQueue;
     private LinkedList oddQueue;
     
+    public void setFileWorker(FileWorker _fileWorker){
+        fileWorker = _fileWorker;
+    }
+
+    public URLQueue() {
+        evenQueue = new LinkedList();
+        oddQueue = new LinkedList();
+    }
+
+    /**
+     * Add base URLs for crawling
+     * @param baseURL 
+     */
+    public void addSeed(String _baseURL){
+        this.push(_baseURL, 0); // push the baseURL to level zero
+    }
     
     @Override
     public Set getGatheredElements() {
@@ -73,8 +93,8 @@ public class URLQueue implements ie.moguntia.threads.Queue {
             URL url = new URL(s);
             return url;
         } catch (MalformedURLException e) {
-        // shouldn't happen, as only URLs can be pushed
-        return null;
+            // shouldn't happen, as only URLs can be pushed
+            return null;
         }
     }
 
@@ -82,7 +102,7 @@ public class URLQueue implements ie.moguntia.threads.Queue {
     public boolean push(Object url, int level) {
         // don't allow more than maxElements links to be gathered
         String s = ((URL) url).toString();
-        if (gatheredLinks.add(s)) {
+        if (!fileWorker.checkIfAlreadyExists(s)) {
             // has not been in set yet, so add to the appropriate queue
             if (level % 2 == 0) {
                 evenQueue.addLast(s);
@@ -98,7 +118,8 @@ public class URLQueue implements ie.moguntia.threads.Queue {
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        evenQueue.clear();
+        oddQueue.clear();
     }
     
 }
