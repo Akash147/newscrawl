@@ -24,13 +24,13 @@ public class BaseURLManager {
     }
     
     public boolean isBaseURL(String URL){
-        System.out.println("Check isBaseURL: " + baseURL.contains(URL));
+        System.out.println("Check isBaseURL: " + URL + " : " + baseURL.contains(URL));
         return baseURL.contains(URL);
     }
     
     public boolean withInDomain(String URL) throws URISyntaxException{
         URI t = new URI(URL);
-        System.out.println("Check withinDomain: " + domain.contains( t.getHost() ));
+        System.out.println("Check withinDomain: " + URL + " : " + domain.contains( t.getHost() ));
         return domain.contains( t.getHost() );
     }
 
@@ -46,7 +46,7 @@ public class BaseURLManager {
                                                           + "|wav|avi|mov|mpeg|ram|m4v|pdf" 
                                                           + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
     public boolean IsUrlJunk(String URL){
-        System.out.println("Check isURLJunk: " + FILTERS.matcher(URL).matches());
+        System.out.println("Check isURLJunk: " + URL + " : " + FILTERS.matcher(URL).matches());
         return FILTERS.matcher(URL).matches();
     }
 }

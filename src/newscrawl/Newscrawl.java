@@ -34,8 +34,8 @@ public class Newscrawl implements MessageReceiver {
                 
                 // Begin by reading config properties
                 // List of base URLs
-                // baseURLManager.add();
                 baseURLManager = new BaseURLManager();
+                baseURLManager.add("http://www.football365.com/premier-league/");
                 baseURLManager.add("http://edition.cnn.com/SPORT/football/archive/");
                 
                 // New Queue

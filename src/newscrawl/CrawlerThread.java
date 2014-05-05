@@ -32,8 +32,10 @@ public class CrawlerThread extends ControllableThread {
                         .timeout(30000)
                         .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.76 Safari/537.36")
                         .get();
-                Readability readability = new Readability(doc);
+
+                Readability readability = null;
                 if( !bMgr.isBaseURL(pageURL.toString()) ){
+                    readability = new Readability(doc);
                     fw.indexThis(pageURL.toString());
                     System.out.println(pageURL.toString() + " written to file");
                 }
@@ -59,5 +61,5 @@ public class CrawlerThread extends ControllableThread {
         }
         return false;
     }
-    
+        
 }
