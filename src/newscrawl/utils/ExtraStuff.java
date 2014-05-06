@@ -9,6 +9,8 @@ import jpt.FileWorker;
 public class ExtraStuff {
     FileWorker fileWorker;
     BaseURLManager baseURLManager;
+    LuceneWorker luceneWorker;
+    MongoWorker mongoWorker;
 
     public void setFileWorker(FileWorker fileWorker) {
         this.fileWorker = fileWorker;
@@ -24,6 +26,22 @@ public class ExtraStuff {
 
     public BaseURLManager getBaseURLManager() {
         return baseURLManager;
+    }
+
+    public LuceneWorker getLuceneWorker() {
+        return luceneWorker;
+    }
+
+    public MongoWorker getMongoWorker() {
+        return mongoWorker;
+    }
+
+    public void setLuceneWorker(LuceneWorker luceneWorker) {
+        this.luceneWorker = luceneWorker;
+    }
+
+    public void setMongoWorker(MongoWorker mongoWorker) {
+        this.mongoWorker = mongoWorker;
     }
     
 }

@@ -51,19 +51,19 @@ public class MongoWorker {
         return id.toString();
     }
     
-    public DBObject findDocumentById(String id) {
+    public DBObject findDocumentById(String id) { // test
         BasicDBObject query = new BasicDBObject();
         query.put("_id", new ObjectId(id));
         DBObject dbObj = collection.findOne(query);
         return dbObj;
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) { // test
         MongoWorker m = new MongoWorker("localhost", 27017, "mydb", "testData");
-        String insert = m.insert("URL", "alu khau", null, null);
+        String insert = m.insert("URL", "today", null, null);
         System.out.println(insert);
         DBObject x = m.findDocumentById(insert);
-        System.out.println(x.get("URL"));
+        System.out.println(x.get("Content"));
     }
     
 }

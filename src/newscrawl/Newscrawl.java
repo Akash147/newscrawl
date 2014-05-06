@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import jpt.FileWorker;
 import newscrawl.utils.BaseURLManager;
 import newscrawl.utils.ExtraStuff;
+import newscrawl.utils.LuceneWorker;
 import newscrawl.utils.URLQueue;
 
 /**
@@ -18,12 +19,16 @@ import newscrawl.utils.URLQueue;
 public class Newscrawl implements MessageReceiver {
     private static FileWorker fileWorker;
     private static BaseURLManager baseURLManager;
+    private static LuceneWorker luceneWorker;
     
-    public Newscrawl(int _maxLevel, int _maxThreads, Queue _queue) throws InstantiationException, IllegalAccessException {
+    public Newscrawl(int _maxLevel, int _maxThreads, Queue _queue) throws InstantiationException, IllegalAccessException, InterruptedException {
         ExtraStuff extras = new ExtraStuff();
         extras.setBaseURLManager(baseURLManager);
         extras.setFileWorker(fileWorker);
+        extras.setLuceneWorker(luceneWorker);
+//        extras.setMongoWorker(mongoWorker);
         ThreadController controller = new ThreadController(CrawlerThread.class, _maxThreads, _maxLevel, _queue, 0, this);
+        Thread.sleep(10000);
         controller.putExtra(extras);
     }
   
@@ -39,8 +44,9 @@ public class Newscrawl implements MessageReceiver {
                 baseURLManager.add("http://edition.cnn.com/SPORT/football/archive/");
                 
                 // New Queue
-                URLQueue queue = new URLQueue();
                 fileWorker = new FileWorker(); // @ TODO temporary
+                URLQueue queue = new URLQueue();
+                
                 queue.setFileWorker(fileWorker); // @TODO temporary
                 // Add seeds to queue
                 for(String s: baseURLManager.getBaseURL())

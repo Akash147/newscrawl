@@ -2,10 +2,12 @@ package newscrawl.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -49,18 +51,13 @@ public class LuceneWorker {
         }
     }
     
-    /**
-     * This creates index of the document provided as param.
-     * @param newsID
-     * @param content
-     * @param title 
-     */
-    public void indexThis(String newsID, String content, String title){
+    public void indexThis(String newsID, String content, String title, Date date){
         try {
             Document doc = new Document();
-            doc.add(new StringField("newsID", newsID, Field.Store.YES));
-            doc.add(new TextField("Content", content, Field.Store.YES));
-            doc.add(new TextField("Title", title, Field.Store.YES));
+            doc.add(new StringField("_id", newsID, Field.Store.YES));
+            doc.add(new TextField("Content", content, Field.Store.NO));
+            doc.add(new TextField("Title", title, Field.Store.NO));
+            doc.add(new Field("Date",DateTools.dateToString(date, DateTools.Resolution.DAY), Field.Store.NO, Field.Index.NOT_ANALYZED));
             writer.addDocument(doc);
             writer.commit();
         } catch (IOException ex) {
