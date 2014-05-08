@@ -99,7 +99,7 @@ public class ThreadController {
 		receiver = _receiver;
 		counter = 0;
 		nThreads = 0;
-                Thread.sleep(1000); // wait till all the ExtraStuffs are loaded
+                Thread.sleep(10000); // wait till all the ExtraStuffs are loaded
 		startThreads();
 	}
         

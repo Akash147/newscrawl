@@ -72,7 +72,7 @@ public class URLQueue implements ie.moguntia.threads.Queue {
     }
 
     @Override
-    public Object pop(int level) {
+    public synchronized Object pop(int level) {
         String s;
         // try to get element from the appropriate queue
         // is the queue is empty, return null
@@ -100,7 +100,7 @@ public class URLQueue implements ie.moguntia.threads.Queue {
     }
 
     @Override
-    public boolean push(Object url, int level) {
+    public synchronized boolean push(Object url, int level) {
         String s = (String) url;
         if (!fileWorker.checkIfAlreadyExists(s)) {
             // has not been in set yet, so add to the appropriate queue
