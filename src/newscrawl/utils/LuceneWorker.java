@@ -65,6 +65,10 @@ public class LuceneWorker {
         }
     }
     
+//    public boolean checkIfAlreadyExists(String url){
+//        
+//    }
+    
     public void close(){
         try {
             writer.close();

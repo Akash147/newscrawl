@@ -7,22 +7,22 @@ import jpt.FileWorker;
  * @author Akash
  */
 public class ExtraStuff {
-    FileWorker fileWorker;
+//    FileWorker fileWorker;
     BaseURLManager baseURLManager;
     LuceneWorker luceneWorker;
     MongoWorker mongoWorker;
 
-    public void setFileWorker(FileWorker fileWorker) {
+    /*public void setFileWorker(FileWorker fileWorker) {
         this.fileWorker = fileWorker;
-    }
+    }*/
 
     public void setBaseURLManager(BaseURLManager baseURLManager) {
         this.baseURLManager = baseURLManager;
     }
 
-    public FileWorker getFileWorker() {
+    /*public FileWorker getFileWorker() {
         return fileWorker;
-    }
+    }*/
 
     public BaseURLManager getBaseURLManager() {
         return baseURLManager;

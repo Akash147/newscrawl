@@ -10,6 +10,7 @@ import jpt.FileWorker;
 import newscrawl.utils.BaseURLManager;
 import newscrawl.utils.ExtraStuff;
 import newscrawl.utils.LuceneWorker;
+import newscrawl.utils.MongoWorker;
 import newscrawl.utils.URLQueue;
 
 /**
@@ -18,17 +19,17 @@ import newscrawl.utils.URLQueue;
  */
 public class Newscrawl implements MessageReceiver {
     private static FileWorker fileWorker;
+    private static MongoWorker mongoWorker;
     private static BaseURLManager baseURLManager;
     private static LuceneWorker luceneWorker;
     
     public Newscrawl(int _maxLevel, int _maxThreads, Queue _queue) throws InstantiationException, IllegalAccessException, InterruptedException {
         ExtraStuff extras = new ExtraStuff();
         extras.setBaseURLManager(baseURLManager);
-        extras.setFileWorker(fileWorker);
+//        extras.setFileWorker(fileWorker);
         extras.setLuceneWorker(luceneWorker);
-//        extras.setMongoWorker(mongoWorker);
+        extras.setMongoWorker(mongoWorker);
         ThreadController controller = new ThreadController(CrawlerThread.class, _maxThreads, _maxLevel, _queue, 0, this);
-        Thread.sleep(10000);
         controller.putExtra(extras);
     }
   
@@ -40,14 +41,27 @@ public class Newscrawl implements MessageReceiver {
                 // Begin by reading config properties
                 // List of base URLs
                 baseURLManager = new BaseURLManager();
-                baseURLManager.add("http://www.football365.com/premier-league/");
-                baseURLManager.add("http://edition.cnn.com/SPORT/football/archive/");
+//                baseURLManager.add("http://www.football365.com/premier-league/");
+                baseURLManager.add("http://www.telegraph.co.uk/sport/football/news/");
+//                baseURLManager.add("http://edition.cnn.com/SPORT/football/archive/");
+                
+                
+                // Lucene parameters
+                String indexLocation = "/home/siranami/NetBeansProjects/newsIndex/";
+                String mongoHost = "localhost";
+                int mongoPort = 27017;                // New Queue
+                String dbName = "newscrawl";
+                String collName = "news";
+                
+                // Initialization of workers
+                luceneWorker = new LuceneWorker(indexLocation);
+                mongoWorker = new MongoWorker(mongoHost, mongoPort, dbName, collName);
+                fileWorker = new FileWorker(); // @ TODO temporary
                 
                 // New Queue
-                fileWorker = new FileWorker(); // @ TODO temporary
                 URLQueue queue = new URLQueue();
                 
-                queue.setFileWorker(fileWorker); // @TODO temporary
+                queue.setFileWorker(mongoWorker); // @TODO temporary
                 // Add seeds to queue
                 for(String s: baseURLManager.getBaseURL())
                     queue.addSeed(s);
@@ -82,5 +96,8 @@ public class Newscrawl implements MessageReceiver {
     @Override
     public void finishedAll() {
         System.out.println("All finished and sleeping");
+        // All worker needs to be closed
+        luceneWorker.close();
+        mongoWorker.close();
     }
 }

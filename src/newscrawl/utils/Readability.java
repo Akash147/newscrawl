@@ -124,6 +124,12 @@ public class Readability {
     public final String outerHtml() {
         return mDocument.outerHtml();
     }
+    public final String mongoText(){
+        return mDocument.getElementById("readability-content").toString();
+    }
+    public final String luceneText(){
+        return mDocument.getElementById("readability-content").text();
+    }
 
     /**
      * Get the article title as an H1. Currently just uses document.title, we

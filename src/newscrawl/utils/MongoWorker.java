@@ -3,11 +3,13 @@ package newscrawl.utils;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.WriteResult;
 import java.net.UnknownHostException;
 import java.util.Date;
+import org.apache.lucene.document.DateTools;
 import org.bson.types.ObjectId;
 
 /**
@@ -19,6 +21,7 @@ public class MongoWorker {
     private final int port;
     private final String dbName;
     private final String collectionName;
+    private MongoClient mongoClient;
     private DBCollection collection;
 
     public MongoWorker(String host, int port, String dbName, String collectionName) {
@@ -31,7 +34,7 @@ public class MongoWorker {
     
     private boolean establishConnection(){
         try {
-            MongoClient mongoClient = new MongoClient( host , port );
+            mongoClient = new MongoClient( host , port );
             DB db = mongoClient.getDB(dbName);
             collection = db.getCollection(collectionName);
         } catch (UnknownHostException ex) {
@@ -40,15 +43,26 @@ public class MongoWorker {
         return true;
     }
     
-    private String insert(String URL, String content, String title, String date){
+    public String insert(String URL, String content, String title, Date date){
         BasicDBObject document = new BasicDBObject();
 	document.put("URL", URL);
 	document.put("Content", content);
 	document.put("Title", title);
-	document.put("Date", new Date());
+	document.put("Date", DateTools.dateToString(date, DateTools.Resolution.DAY));
         WriteResult insert = collection.insert(document);
         ObjectId id = (ObjectId) document.get( "_id" );
         return id.toString();
+    }
+    
+    public void close(){
+        mongoClient.close();
+    }
+    
+    public boolean checkIfAlreadyExists(String url){
+        BasicDBObject query = new BasicDBObject();
+        query.put("URL", url);
+        DBCursor result = collection.find(query);
+        return ( result.count() > 0 );
     }
     
     public DBObject findDocumentById(String id) { // test

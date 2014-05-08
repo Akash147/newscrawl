@@ -8,22 +8,19 @@ package newscrawl.utils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Set;
-import jpt.FileWorker;
-import org.jsoup.helper.DescendableLinkedList;
 
 /**
  *
  * @author Akash
  */
 public class URLQueue implements ie.moguntia.threads.Queue {
-    private FileWorker fileWorker;
+    private MongoWorker fileWorker;
     private LinkedList evenQueue;
     private LinkedList oddQueue;
     
-    public void setFileWorker(FileWorker _fileWorker){
+    public void setFileWorker(MongoWorker _fileWorker){
         fileWorker = _fileWorker;
     }
 

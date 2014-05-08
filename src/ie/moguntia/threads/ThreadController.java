@@ -90,7 +90,7 @@ public class ThreadController {
 							Queue _tasks,
 							int _level,
 							MessageReceiver _receiver)
-		throws InstantiationException, IllegalAccessException {
+		throws InstantiationException, IllegalAccessException, InterruptedException {
 		threadClass = _threadClass;
 		maxThreads = _maxThreads;
 		maxLevel = _maxLevel;
@@ -99,6 +99,7 @@ public class ThreadController {
 		receiver = _receiver;
 		counter = 0;
 		nThreads = 0;
+                Thread.sleep(1000); // wait till all the ExtraStuffs are loaded
 		startThreads();
 	}
         
