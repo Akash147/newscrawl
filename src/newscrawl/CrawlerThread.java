@@ -47,7 +47,7 @@ public class CrawlerThread extends ControllableThread {
                     readability.init();
 //                    fw.indexThis(pageURL.toString());
                     String testString = readability.luceneText();
-                    if (shouldIndex(testString)){ // some crawled content are just junk not news.. 
+                    if (shouldIndex(testString) && !mw.checkIfAlreadyExists(pageURL.toString())){ // some crawled content are just junk not news.. 
                         Date date = new Date();
                         String _id = mw.insert(pageURL.toString(), readability.mongoText(), doc.title(), date);
                         lw.indexThis(_id, readability.luceneText(), doc.title(), date);
@@ -58,7 +58,8 @@ public class CrawlerThread extends ControllableThread {
                 // get all hyperlinks and push to queue@(level+1)
                 Elements links = doc.select("a[href]");
 		for (Element link : links) {
-                    queue.push(link.attr("abs:href"), level + 1);
+                    if(!mw.checkIfAlreadyExists(link.attr("abs:href")))
+                        queue.push(link.attr("abs:href"), level + 1);
                 }
             } catch (IOException ex) {
                 mr.receiveMessage( ex.getMessage() + " while processing " + pageURL.toString(), id);

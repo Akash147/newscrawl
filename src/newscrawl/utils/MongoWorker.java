@@ -56,6 +56,7 @@ public class MongoWorker {
     
     public void close(){
         mongoClient.close();
+        System.out.println("Mongo Closed");
     }
     
     public boolean checkIfAlreadyExists(String url){

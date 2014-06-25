@@ -67,7 +67,7 @@ public class Newscrawl implements MessageReceiver {
                 // Initialization of workers
                 luceneWorker = new LuceneWorker(indexLocation);
                 mongoWorker = new MongoWorker(mongoHost, mongoPort, dbName, collName);
-                fileWorker = new FileWorker(); // @ TODO temporary
+//                fileWorker = new FileWorker(); // @ TODO temporary
                 
                 // New Queue
                 URLQueue queue = new URLQueue();
@@ -82,6 +82,10 @@ public class Newscrawl implements MessageReceiver {
                 new Newscrawl(maxLevel, maxThreads, queue);
                 
                 Thread.sleep(rerun); // after what time crawling needs to be reinitiated?
+                
+                baseURLManager = null;
+                luceneWorker = null;
+                mongoWorker = null;
             } catch (InterruptedException ex) {
                 Logger.getLogger(Newscrawl.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InstantiationException ex) {
@@ -118,6 +122,7 @@ public class Newscrawl implements MessageReceiver {
         Properties conf = new Properties();
         InputStream input = new FileInputStream("crawler.conf");
         conf.load(input);
+        input.close();
         return conf;
     }
 }

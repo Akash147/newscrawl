@@ -72,6 +72,7 @@ public class LuceneWorker {
     public void close(){
         try {
             writer.close();
+            System.out.println("Lucene Closed");
         } catch (IOException ex) {
             Logger.getLogger(LuceneWorker.class.getName()).log(Level.SEVERE, null, ex);
         }
