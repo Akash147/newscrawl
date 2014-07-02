@@ -1,5 +1,7 @@
 package ie.moguntia.threads;
 
+import newscrawl.utils.ExtraStuff;
+
 /**
  * A simple controller class for a multithreaded environment, where threads
  * may insert and process 'tasks' from/into a queue. Multiple 'depth-levels'
@@ -89,7 +91,8 @@ public class ThreadController {
 							int _maxLevel,
 							Queue _tasks,
 							int _level,
-							MessageReceiver _receiver)
+							MessageReceiver _receiver,
+                                                        ExtraStuff _extra)
 		throws InstantiationException, IllegalAccessException, InterruptedException {
 		threadClass = _threadClass;
 		maxThreads = _maxThreads;
@@ -99,6 +102,7 @@ public class ThreadController {
 		receiver = _receiver;
 		counter = 0;
 		nThreads = 0;
+                extra = _extra;
                 Thread.sleep(10000); // wait till all the ExtraStuffs are loaded
 		startThreads();
 	}

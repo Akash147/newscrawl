@@ -30,13 +30,15 @@ public class Newscrawl implements MessageReceiver {
     private static Properties config;
     
     public Newscrawl(int _maxLevel, int _maxThreads, Queue _queue) throws InstantiationException, IllegalAccessException, InterruptedException {
-        ExtraStuff extras = new ExtraStuff();
-        extras.setBaseURLManager(baseURLManager);
-//        extras.setFileWorker(fileWorker);
-        extras.setLuceneWorker(luceneWorker);
-        extras.setMongoWorker(mongoWorker);
-        ThreadController controller = new ThreadController(CrawlerThread.class, _maxThreads, _maxLevel, _queue, 0, this);
-        controller.putExtra(extras);
+        if (baseURLManager!=null && mongoWorker!=null && luceneWorker!=null){
+            ExtraStuff extras = new ExtraStuff();
+            extras.setBaseURLManager(baseURLManager);
+    //        extras.setFileWorker(fileWorker);
+            extras.setLuceneWorker(luceneWorker);
+            extras.setMongoWorker(mongoWorker);
+            ThreadController controller = new ThreadController(CrawlerThread.class, _maxThreads, _maxLevel, _queue, 0, this, extras);
+            controller.putExtra(extras);
+        }
     }
   
     public static void main(String[] args) {
@@ -78,14 +80,13 @@ public class Newscrawl implements MessageReceiver {
                     queue.addSeed(s);
                 int maxThreads = 10;
                 int maxLevel = 1;
-                
-                new Newscrawl(maxLevel, maxThreads, queue);
+                Newscrawl newscrawl = new Newscrawl(maxLevel, maxThreads, queue);
                 
                 Thread.sleep(rerun); // after what time crawling needs to be reinitiated?
                 
-                baseURLManager = null;
-                luceneWorker = null;
-                mongoWorker = null;
+//                baseURLManager = null;
+//                luceneWorker = null;
+//                mongoWorker = null;
             } catch (InterruptedException ex) {
                 Logger.getLogger(Newscrawl.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InstantiationException ex) {
